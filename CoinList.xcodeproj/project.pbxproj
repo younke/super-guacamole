@@ -13,6 +13,9 @@
 		A72A75DA2177299D000D6C79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72A75D92177299D000D6C79 /* Assets.xcassets */; };
 		A72A75DD2177299D000D6C79 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A72A75DB2177299D000D6C79 /* LaunchScreen.storyboard */; };
 		A72A75E82177299D000D6C79 /* CoinListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A75E72177299D000D6C79 /* CoinListTests.swift */; };
+		A72A75F6217729DC000D6C79 /* CryptoCompareClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A75F5217729DC000D6C79 /* CryptoCompareClient.swift */; };
+		A72A75F921772A23000D6C79 /* CryptoCompareClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A75F821772A23000D6C79 /* CryptoCompareClientTests.swift */; };
+		A72A75FC21772AB8000D6C79 /* CoinList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A75FB21772AB8000D6C79 /* CoinList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,9 @@
 		A72A75E32177299D000D6C79 /* CoinListTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoinListTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A72A75E72177299D000D6C79 /* CoinListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinListTests.swift; sourceTree = "<group>"; };
 		A72A75E92177299D000D6C79 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A72A75F5217729DC000D6C79 /* CryptoCompareClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoCompareClient.swift; sourceTree = "<group>"; };
+		A72A75F821772A23000D6C79 /* CryptoCompareClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoCompareClientTests.swift; sourceTree = "<group>"; };
+		A72A75FB21772AB8000D6C79 /* CoinList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +83,7 @@
 		A72A75D12177299C000D6C79 /* CoinList */ = {
 			isa = PBXGroup;
 			children = (
+				A72A75F2217729B8000D6C79 /* API */,
 				A72A75D22177299C000D6C79 /* AppDelegate.swift */,
 				A72A75D42177299C000D6C79 /* ViewController.swift */,
 				A72A75D62177299C000D6C79 /* Main.storyboard */,
@@ -90,10 +97,36 @@
 		A72A75E62177299D000D6C79 /* CoinListTests */ = {
 			isa = PBXGroup;
 			children = (
+				A72A75F721772A0E000D6C79 /* API */,
 				A72A75E72177299D000D6C79 /* CoinListTests.swift */,
 				A72A75E92177299D000D6C79 /* Info.plist */,
 			);
 			path = CoinListTests;
+			sourceTree = "<group>";
+		};
+		A72A75F2217729B8000D6C79 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				A72A75FA21772AAB000D6C79 /* ResponseModels */,
+				A72A75F5217729DC000D6C79 /* CryptoCompareClient.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		A72A75F721772A0E000D6C79 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				A72A75F821772A23000D6C79 /* CryptoCompareClientTests.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		A72A75FA21772AAB000D6C79 /* ResponseModels */ = {
+			isa = PBXGroup;
+			children = (
+				A72A75FB21772AB8000D6C79 /* CoinList.swift */,
+			);
+			path = ResponseModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,6 +231,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A72A75D52177299C000D6C79 /* ViewController.swift in Sources */,
+				A72A75F6217729DC000D6C79 /* CryptoCompareClient.swift in Sources */,
+				A72A75FC21772AB8000D6C79 /* CoinList.swift in Sources */,
 				A72A75D32177299C000D6C79 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,6 +242,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A72A75E82177299D000D6C79 /* CoinListTests.swift in Sources */,
+				A72A75F921772A23000D6C79 /* CryptoCompareClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
