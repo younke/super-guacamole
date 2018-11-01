@@ -32,7 +32,7 @@ class CryptoCompareClient {
         self.session = session
     }
     
-    func fetchCountList(completion: @escaping ApiCompletionBlock<CoinList>) {
+    func fetchCoinList(completion: @escaping ApiCompletionBlock<CoinList>) {
         let url = URL(string: "https://min-api.cryptocompare.com/data/all/coinlist")!
         let req = URLRequest(url: url)
         let task = session.dataTask(with: req) { (data, response, error) in

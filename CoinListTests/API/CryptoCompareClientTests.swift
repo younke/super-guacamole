@@ -18,7 +18,7 @@ class CryptoCompareClientTests: XCTestCase {
     
     func testFetchesCoinListResponse() {
         let exp = expectation(description: "Received response")
-        client.fetchCountList { result in
+        client.fetchCoinList { result in
             exp.fulfill()
             switch result {
             case .success(let cointList):
@@ -32,9 +32,27 @@ class CryptoCompareClientTests: XCTestCase {
     
     func testCallsBackOnMainQueue() {
         let exp = expectation(description: "Received response")
-        client.fetchCountList { result in
+        client.fetchCoinList { result in
             exp.fulfill()
             XCTAssert(Thread.isMainThread, "Expected to be called back on the main queue")
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testCoinListRetrievesCoins() {
+        let exp = expectation(description: "Received response")
+        client.fetchCoinList { result in
+            exp.fulfill()
+            switch result {
+            case .success(let coinList):
+                XCTAssertGreaterThan(coinList.data.allCoins().count, 1)
+                let coin = coinList.data["BTC"]
+                XCTAssertNotNil(coin)
+                XCTAssertEqual(coin?.symbol, "BTC")
+                XCTAssertEqual(coin?.name, "Bitcoin")
+            case .failure(let error):
+                XCTFail("Error in coin list request: \(error)")
+            }
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
