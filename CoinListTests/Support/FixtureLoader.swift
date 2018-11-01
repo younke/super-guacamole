@@ -20,10 +20,26 @@ class FixtureLoader {
         }
     }
 
-    static func stupCoinListReturningError() {
+    static func stubCoinListReturningError() {
+        let data = "Server Error".data(using: .utf8)!
+        stubCoinListWithData(data, statusCode: 500, headers: nil)
+    }
+
+    static func stubCoinListWithConnectionError(code: Int) {
         stub(condition: isHost("min-api.cryptocompare.com") && isPath("/data/all/coinlist")) { req -> OHHTTPStubsResponse in
-            let data = "Server Error".data(using: .utf8)!
-            return OHHTTPStubsResponse(data: data, statusCode: 500, headers: nil)
+            let fakeError = NSError(domain: "testDomain", code: code, userInfo: nil)
+            return OHHTTPStubsResponse(error: fakeError)
+        }
+    }
+
+    static func stubCoinListWithInvalidJSON() {
+        let data = "this is not valid json".data(using: .utf8)!
+        stubCoinListWithData(data)
+    }
+
+    static func stubCoinListWithData(_ data: Data, statusCode: Int = 200, headers: [AnyHashable: Any]? = nil) {
+        stub(condition: isHost("min-api.cryptocompare.com") && isPath("/data/all/coinlist")) { req -> OHHTTPStubsResponse in
+            return OHHTTPStubsResponse(data: data, statusCode: 200, headers: headers)
         }
     }
 

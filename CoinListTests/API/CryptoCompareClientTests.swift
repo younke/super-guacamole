@@ -51,7 +51,7 @@ class CryptoCompareClientTests: XCTestCase {
     }
 
     func testCoinListResponseReturnsServerError() {
-        FixtureLoader.stupCoinListReturningError()
+        FixtureLoader.stubCoinListReturningError()
         
         let exp = expectation(description: "Received response")
         client.fetchCoinList { result in
@@ -84,6 +84,27 @@ class CryptoCompareClientTests: XCTestCase {
                 XCTAssertEqual(coin?.name, "Bitcoin")
             case .failure(let error):
                 XCTFail("Error in coin list request: \(error)")
+            }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testConnectionErrorIsReturned() {
+        FixtureLoader.stubCoinListWithConnectionError(code: 999)
+        let exp = expectation(description: "Received network error")
+        client.fetchCoinList { result in
+            exp.fulfill()
+            switch result {
+            case .success(_):
+                XCTFail("Should have returned an error")
+            case .failure(let error):
+                switch error {
+                case .connectionError(let e):
+                    XCTAssertEqual((e as NSError).code, 999)
+                default:
+                    XCTFail("Expected connection error, but got: \(error)")
+                }
+
             }
         }
         waitForExpectations(timeout: 3.0, handler: nil)
