@@ -17,7 +17,7 @@ enum ApiResult<T: Decodable> {
 
 enum ApiError: Error {
     case notFound // 404
-    case serverError // 5xx
+    case serverError(Int) // 5xx
     case requestError // 4xx
     case responseFormatInvalid(String)
     case connectionError(Error)
@@ -52,7 +52,7 @@ class CryptoCompareClient {
                         ApiResult.failure(.responseFormatInvalid(bodyString ?? "<nobody>")) -=> completion
                     }
                 default:
-                    ApiResult.failure(.serverError) -=> completion
+                    ApiResult.failure(.serverError(http.statusCode)) -=> completion
                 }
             }
         }

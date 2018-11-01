@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import OHHTTPStubs
 @testable import CoinList
 
 class CryptoCompareClientTests: XCTestCase {
@@ -14,6 +15,16 @@ class CryptoCompareClientTests: XCTestCase {
     
     override func setUp() {
         client = CryptoCompareClient(session: URLSession.shared)
+
+        OHHTTPStubs.onStubMissing { request in
+            XCTFail("Missing stub for \(request)")
+        }
+
+        FixtureLoader.stubCoinListResponse()
+    }
+
+    override func tearDown() {
+        FixtureLoader.reset()
     }
     
     func testFetchesCoinListResponse() {
@@ -35,6 +46,27 @@ class CryptoCompareClientTests: XCTestCase {
         client.fetchCoinList { result in
             exp.fulfill()
             XCTAssert(Thread.isMainThread, "Expected to be called back on the main queue")
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
+    func testCoinListResponseReturnsServerError() {
+        FixtureLoader.stupCoinListReturningError()
+        
+        let exp = expectation(description: "Received response")
+        client.fetchCoinList { result in
+            exp.fulfill()
+            switch result {
+            case .success(_):
+                XCTFail("Should have returned an error")
+            case .failure(let error):
+                if case ApiError.serverError(let statusCode) = error {
+                    XCTAssertEqual(statusCode, 500)
+                } else {
+                    XCTFail("Expected server error, but got: \(error)")
+                }
+
+            }
         }
         waitForExpectations(timeout: 3.0, handler: nil)
     }
