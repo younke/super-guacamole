@@ -11,7 +11,7 @@ import OHHTTPStubs
 @testable import CoinList
 
 extension CryptoCompareClient {
-    func fetchCoinListVerifyingResponse(file: StaticString = #file, line: UInt = #line, _ resultBlock: @escaping
+    func testFetchCoinListVerifyingResponse(file: StaticString = #file, line: UInt = #line, _ resultBlock: @escaping
         (ApiResult<CoinList>) -> Void) {
         let exp = XCTestExpectation(description: "Received coin list response")
         fetchCoinList { result in
@@ -24,6 +24,34 @@ extension CryptoCompareClient {
             XCTFail("Timed out waiting for coin list response", file: file, line: line)
         default:
             break
+        }
+    }
+
+    func testFetchCoinListSuccessfully(
+        file: StaticString = #file,
+        line: UInt = #line,
+        coinListBlock: @escaping (CoinList) -> Void) {
+        testFetchCoinListVerifyingResponse { result in
+            switch result {
+            case .success(let coinList):
+                XCTAssertEqual(coinList.response, "Success", file: file, line: line)
+                coinListBlock(coinList)
+            case .failure(let error):
+                XCTFail("Error in coin list request: \(error)", file: file, line: line)
+            }
+        }
+    }
+
+    func testFetchCoinListFailure(file: StaticString = #file,
+                                  line: UInt = #line,
+                                  errorBlock: @escaping (Error) -> Void) {
+        testFetchCoinListVerifyingResponse { result in
+            switch result {
+            case .success(let coinList):
+                XCTFail("Expected error, but received success: \(coinList)", file: file, line: line)
+            case .failure(let error):
+                errorBlock(error)
+            }
         }
     }
 }
@@ -39,6 +67,8 @@ class CryptoCompareClientTests: XCTestCase {
         }
 
         FixtureLoader.stubCoinListResponse()
+
+        continueAfterFailure = false
     }
 
     override func tearDown() {
@@ -46,83 +76,66 @@ class CryptoCompareClientTests: XCTestCase {
     }
     
     func testFetchesCoinListResponse() {
-        client.fetchCoinListVerifyingResponse { result in
-            switch result {
-            case .success(let cointList):
-                XCTAssertEqual(cointList.response, "Success")
-            case .failure(let error):
-                XCTFail("Error in coin list request: \(error)")
-            }
+        client.testFetchCoinListSuccessfully { coinList in
+            XCTAssertEqual(coinList.baseImageURL, URL(string: "https://www.cryptocompare.com")!)
         }
     }
     
     func testCallsBackOnMainQueue() {
-        client.fetchCoinListVerifyingResponse { result in
+        client.testFetchCoinListVerifyingResponse { result in
             XCTAssert(Thread.isMainThread, "Expected to be called back on the main queue")
         }
     }
 
     func testCoinListResponseReturnsServerError() {
         FixtureLoader.stubCoinListReturningError()
-        client.fetchCoinListVerifyingResponse { result in
-            switch result {
-            case .success(_):
-                XCTFail("Should have returned an error")
-            case .failure(let error):
-                if case ApiError.serverError(let statusCode) = error {
-                    XCTAssertEqual(statusCode, 500)
-                } else {
-                    XCTFail("Expected server error, but got: \(error)")
-                }
+        client.testFetchCoinListFailure { error in
+            if case ApiError.serverError(let statusCode) = error {
+                XCTAssertEqual(statusCode, 500)
+            } else {
+                XCTFail("Expected server error, but got: \(error)")
             }
         }
     }
 
     func testCoinListCatchesErrorWithNobody() {
         FixtureLoader.stubCoinListWithData(Data(bytes: [UInt8.max]))
-        client.fetchCoinListVerifyingResponse { result in
-            switch result {
-            case .success(_):
-                XCTFail("Received valid response")
-            case .failure(let error):
-                if case ApiError.responseFormatInvalid(let str) = error {
-                    XCTAssertEqual("<nobody>", str)
-                } else {
-                    XCTFail("Expected ")
-                }
+        client.testFetchCoinListFailure { error in
+            if case ApiError.responseFormatInvalid(let str) = error {
+                XCTAssertEqual("<nobody>", str)
+            } else {
+                XCTFail("Expected response format error, but got: \(error)")
             }
         }
     }
 
     func testCoinListRetrievesCoins() {
-        client.fetchCoinListVerifyingResponse { result in
-            switch result {
-            case .success(let coinList):
-                XCTAssertGreaterThan(coinList.data.allCoins().count, 1)
-                let coin = coinList.data["BTC"]
-                XCTAssertNotNil(coin)
-                XCTAssertEqual(coin?.symbol, "BTC")
-                XCTAssertEqual(coin?.name, "Bitcoin")
-            case .failure(let error):
-                XCTFail("Error in coin list request: \(error)")
-            }
+        client.testFetchCoinListSuccessfully { coinList in
+            self.assertContainsCoin(name: "Bitcoin", symbol: "BTC", coinList: coinList)
         }
+    }
+
+    private func assertContainsCoin(
+        name: String,
+        symbol: String,
+        coinList: CoinList,
+        file: StaticString = #file, line: UInt = #line) {
+        XCTAssertGreaterThan(coinList.data.allCoins().count, 1, "Coin list is empty", file: file, line: line)
+        let coin = coinList.data[symbol]
+        XCTAssertNotNil(coin, "Could not find a coin in the list with symbol", file: file, line: line)
+        XCTAssertEqual(coin?.symbol, symbol, "Symbol incorrect", file: file, line: line)
+        XCTAssertEqual(coin?.name, name, "Name is incorrect", file: file, line: line)
     }
 
     func testConnectionErrorIsReturned() {
         FixtureLoader.stubCoinListWithConnectionError(code: 999)
-        client.fetchCoinListVerifyingResponse { result in
-            switch result {
-            case .success(_):
-                XCTFail("Should have returned an error")
-            case .failure(let error):
-                switch error {
-                case .connectionError(let e):
-                    XCTAssertEqual((e as NSError).code, 999)
-                default:
-                    XCTFail("Expected connection error, but got: \(error)")
-                }
+        client.testFetchCoinListFailure { error in
+            if case ApiError.connectionError(let e) = error {
+                XCTAssertEqual((e as NSError).code, 999)
+            } else {
+                XCTFail("Expected connection error, but got: \(error)")
             }
         }
     }
+
 }
