@@ -71,6 +71,25 @@ class CryptoCompareClientTests: XCTestCase {
         waitForExpectations(timeout: 3.0, handler: nil)
     }
 
+    func testCoinListResponseFormatError() {
+        FixtureLoader.stubCoinListWithInvalidJSON("invalid")
+        let exp = expectation(description: "Received response")
+        client.fetchCoinList { result in
+            exp.fulfill()
+            switch result {
+            case .success(_):
+                XCTFail("Received valid response")
+            case .failure(let error):
+                if case ApiError.responseFormatInvalid(let str) = error {
+                    XCTAssertEqual("invalid", str)
+                } else {
+                    XCTFail("Expected ")
+                }
+            }
+        }
+        waitForExpectations(timeout: 3.0, handler: nil)
+    }
+
     func testCoinListRetrievesCoins() {
         let exp = expectation(description: "Received response")
         client.fetchCoinList { result in

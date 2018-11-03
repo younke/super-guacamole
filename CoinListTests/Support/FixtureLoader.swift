@@ -32,14 +32,13 @@ class FixtureLoader {
         }
     }
 
-    static func stubCoinListWithInvalidJSON() {
-        let data = "this is not valid json".data(using: .utf8)!
-        stubCoinListWithData(data)
+    static func stubCoinListWithInvalidJSON(_ json: String) {
+        stubCoinListWithData(json.data(using: .utf8)!)
     }
 
-    static func stubCoinListWithData(_ data: Data, statusCode: Int = 200, headers: [AnyHashable: Any]? = nil) {
+    private static func stubCoinListWithData(_ data: Data, statusCode: Int32 = 200, headers: [AnyHashable: Any]? = nil) {
         stub(condition: isHost("min-api.cryptocompare.com") && isPath("/data/all/coinlist")) { req -> OHHTTPStubsResponse in
-            return OHHTTPStubsResponse(data: data, statusCode: 200, headers: headers)
+            return OHHTTPStubsResponse(data: data, statusCode: statusCode, headers: headers)
         }
     }
 
