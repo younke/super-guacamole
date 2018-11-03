@@ -32,11 +32,7 @@ class FixtureLoader {
         }
     }
 
-    static func stubCoinListWithInvalidJSON(_ json: String) {
-        stubCoinListWithData(json.data(using: .utf8)!)
-    }
-
-    private static func stubCoinListWithData(_ data: Data, statusCode: Int32 = 200, headers: [AnyHashable: Any]? = nil) {
+    static func stubCoinListWithData(_ data: Data, statusCode: Int32 = 200, headers: [AnyHashable: Any]? = nil) {
         stub(condition: isHost("min-api.cryptocompare.com") && isPath("/data/all/coinlist")) { req -> OHHTTPStubsResponse in
             return OHHTTPStubsResponse(data: data, statusCode: statusCode, headers: headers)
         }
