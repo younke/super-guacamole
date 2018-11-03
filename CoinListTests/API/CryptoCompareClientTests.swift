@@ -10,6 +10,24 @@ import XCTest
 import OHHTTPStubs
 @testable import CoinList
 
+extension CryptoCompareClient {
+    func fetchCoinListVerifyingResponse(file: StaticString = #file, line: UInt = #line, _ resultBlock: @escaping
+        (ApiResult<CoinList>) -> Void) {
+        let exp = XCTestExpectation(description: "Received coin list response")
+        fetchCoinList { result in
+            exp.fulfill()
+            resultBlock(result)
+        }
+        let result = XCTWaiter.wait(for: [exp], timeout: 3.0)
+        switch result {
+        case .timedOut:
+            XCTFail("Timed out waiting for coin list response", file: file, line: line)
+        default:
+            break
+        }
+    }
+}
+
 class CryptoCompareClientTests: XCTestCase {
     var client: CryptoCompareClient!
     
@@ -28,9 +46,7 @@ class CryptoCompareClientTests: XCTestCase {
     }
     
     func testFetchesCoinListResponse() {
-        let exp = expectation(description: "Received response")
-        client.fetchCoinList { result in
-            exp.fulfill()
+        client.fetchCoinListVerifyingResponse { result in
             switch result {
             case .success(let cointList):
                 XCTAssertEqual(cointList.response, "Success")
@@ -38,24 +54,17 @@ class CryptoCompareClientTests: XCTestCase {
                 XCTFail("Error in coin list request: \(error)")
             }
         }
-        waitForExpectations(timeout: 3.0, handler: nil)
     }
     
     func testCallsBackOnMainQueue() {
-        let exp = expectation(description: "Received response")
-        client.fetchCoinList { result in
-            exp.fulfill()
+        client.fetchCoinListVerifyingResponse { result in
             XCTAssert(Thread.isMainThread, "Expected to be called back on the main queue")
         }
-        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
     func testCoinListResponseReturnsServerError() {
         FixtureLoader.stubCoinListReturningError()
-        
-        let exp = expectation(description: "Received response")
-        client.fetchCoinList { result in
-            exp.fulfill()
+        client.fetchCoinListVerifyingResponse { result in
             switch result {
             case .success(_):
                 XCTFail("Should have returned an error")
@@ -65,17 +74,13 @@ class CryptoCompareClientTests: XCTestCase {
                 } else {
                     XCTFail("Expected server error, but got: \(error)")
                 }
-
             }
         }
-        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
     func testCoinListCatchesErrorWithNobody() {
         FixtureLoader.stubCoinListWithData(Data(bytes: [UInt8.max]))
-        let exp = expectation(description: "Received response")
-        client.fetchCoinList { result in
-            exp.fulfill()
+        client.fetchCoinListVerifyingResponse { result in
             switch result {
             case .success(_):
                 XCTFail("Received valid response")
@@ -87,13 +92,10 @@ class CryptoCompareClientTests: XCTestCase {
                 }
             }
         }
-        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
     func testCoinListRetrievesCoins() {
-        let exp = expectation(description: "Received response")
-        client.fetchCoinList { result in
-            exp.fulfill()
+        client.fetchCoinListVerifyingResponse { result in
             switch result {
             case .success(let coinList):
                 XCTAssertGreaterThan(coinList.data.allCoins().count, 1)
@@ -105,14 +107,11 @@ class CryptoCompareClientTests: XCTestCase {
                 XCTFail("Error in coin list request: \(error)")
             }
         }
-        waitForExpectations(timeout: 3.0, handler: nil)
     }
 
     func testConnectionErrorIsReturned() {
         FixtureLoader.stubCoinListWithConnectionError(code: 999)
-        let exp = expectation(description: "Received network error")
-        client.fetchCoinList { result in
-            exp.fulfill()
+        client.fetchCoinListVerifyingResponse { result in
             switch result {
             case .success(_):
                 XCTFail("Should have returned an error")
@@ -123,9 +122,7 @@ class CryptoCompareClientTests: XCTestCase {
                 default:
                     XCTFail("Expected connection error, but got: \(error)")
                 }
-
             }
         }
-        waitForExpectations(timeout: 3.0, handler: nil)
     }
 }
