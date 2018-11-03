@@ -49,6 +49,12 @@ struct CoinList: Decodable {
             }
         }
 
+        init(coins: [Coin]) {
+            coins.forEach {
+                self.coins[$0.symbol] = $0
+            }
+        }
+
         func allCoins() -> [Coin] {
             return Array(coins.values)
         }
