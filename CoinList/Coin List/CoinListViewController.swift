@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class CoinListViewController: UITableViewController, StoryboardInitializable {
 
@@ -53,6 +54,7 @@ final class CoinListViewController: UITableViewController, StoryboardInitializab
         guard let coin = coins?[indexPath.row] else { return cell }
         cell.coinNameLabel.text = coin.name
         cell.coinSymbolLabel.text = coin.symbol
+        cell.coinImageView.kf.setImage(with: coin.imageURL)
         return cell
     }
 }

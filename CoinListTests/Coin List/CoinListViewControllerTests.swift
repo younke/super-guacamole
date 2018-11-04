@@ -8,6 +8,7 @@
 
 import Foundation
 import XCTest
+import OHHTTPStubs
 @testable import CoinList
 
 class MockCryptoClient: CryptoCompareClient {
@@ -41,6 +42,10 @@ class CoinListViewControllerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        
+        OHHTTPStubs.failOnMissingStubs()
+        OHHTTPStubs.stubImageRequests()
+
         viewController = CoinListViewController.makeFromStoryboard()
     }
 
@@ -83,7 +88,7 @@ class CoinListViewControllerTests: XCTestCase {
 
     func testReturnsCoinCells() {
         let coinList = buildCoinList(with: [
-            CoinList.Coin(name: "Bitcoin", symbol: "BTC", imagePath: nil),
+            CoinList.Coin(name: "Bitcoin", symbol: "BTC", imagePath: "/media/19633/btc.png"),
             CoinList.Coin(name: "Etherium", symbol: "ETH", imagePath: nil),
             ])
         let mockClient = MockCryptoClient(completingWith: .success(coinList))

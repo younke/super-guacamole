@@ -15,10 +15,9 @@ struct Coin {
 
     static func convert(_ coinList: CoinList) -> [Coin] {
         let baseImageURL = coinList.baseImageURL
-        return coinList.data.allCoins().map {
-            let imageURL = $0.imagePath
-                .flatMap { baseImageURL.appendingPathComponent($0) }
-            return Coin(name: $0.name, symbol: $0.symbol, imageURL: imageURL)
+        return coinList.data.allCoins().map { coinData in
+            let imageURL = coinData.imagePath.flatMap { baseImageURL.appendingPathComponent($0) }
+            return Coin(name: coinData.name, symbol: coinData.symbol, imageURL: imageURL)
         }
     }
 }

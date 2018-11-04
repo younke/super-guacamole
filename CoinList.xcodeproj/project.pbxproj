@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		44FA8C0E7CB74CCD679F4727 /* Pods_CoinList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C33DB0B27E90BBF34B537C08 /* Pods_CoinList.framework */; };
 		9CEA99791F3573F4E5A4E78E /* Pods_CoinListTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76366BFD8AFA8EDA206D8400 /* Pods_CoinListTests.framework */; };
+		A714DA58218EB24D0016B27D /* OHHTTPStubsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A714DA57218EB24D0016B27D /* OHHTTPStubsExtensions.swift */; };
 		A72A75D32177299C000D6C79 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A72A75D22177299C000D6C79 /* AppDelegate.swift */; };
 		A72A75D82177299C000D6C79 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A72A75D62177299C000D6C79 /* Main.storyboard */; };
 		A72A75DA2177299D000D6C79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A72A75D92177299D000D6C79 /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 		3F0336112BE4A6DA978407FB /* Pods-CoinListTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinListTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoinListTests/Pods-CoinListTests.release.xcconfig"; sourceTree = "<group>"; };
 		73296AFF4C6C4BAC52C5BE06 /* Pods-CoinList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinList.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoinList/Pods-CoinList.debug.xcconfig"; sourceTree = "<group>"; };
 		76366BFD8AFA8EDA206D8400 /* Pods_CoinListTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoinListTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A714DA57218EB24D0016B27D /* OHHTTPStubsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OHHTTPStubsExtensions.swift; sourceTree = "<group>"; };
 		A72A75CF2177299C000D6C79 /* CoinList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoinList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A72A75D22177299C000D6C79 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A72A75D72177299C000D6C79 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				A7909F56218B34AB00B46CB7 /* FixtureLoader.swift */,
+				A714DA57218EB24D0016B27D /* OHHTTPStubsExtensions.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				A72A75CB2177299C000D6C79 /* Sources */,
 				A72A75CC2177299C000D6C79 /* Frameworks */,
 				A72A75CD2177299C000D6C79 /* Resources */,
+				9899D599D1E32425CC1F6744 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -367,6 +371,28 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CoinListTests/Pods-CoinListTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		9899D599D1E32425CC1F6744 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CoinList/Pods-CoinList-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CoinList/Pods-CoinList-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		ADC07C4AE2232FE5541AC318 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -414,6 +440,7 @@
 				A72A75E82177299D000D6C79 /* CoinListTests.swift in Sources */,
 				A7909F5F218D903900B46CB7 /* CoinListViewControllerTests.swift in Sources */,
 				A72A75F921772A23000D6C79 /* CryptoCompareClientTests.swift in Sources */,
+				A714DA58218EB24D0016B27D /* OHHTTPStubsExtensions.swift in Sources */,
 				A7909F57218B34AB00B46CB7 /* FixtureLoader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

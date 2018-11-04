@@ -72,7 +72,7 @@ struct CoinList: Decodable {
         private enum CodingKeys: String, CodingKey {
             case name = "CoinName"
             case symbol = "Symbol"
-            case imagePath = "ImagePath"
+            case imagePath = "ImageUrl"
         }
     }
 }

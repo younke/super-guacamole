@@ -6,6 +6,7 @@ target 'CoinList' do
   use_frameworks!
 
   # Pods for CoinList
+  pod 'Kingfisher'
 
   target 'CoinListTests' do
     inherit! :search_paths
