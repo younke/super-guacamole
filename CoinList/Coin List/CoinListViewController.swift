@@ -40,7 +40,7 @@ final class CoinListViewController: UITableViewController, StoryboardInitializab
                 self.coins = Coin.convert(coinList)
                 self.tableView.reloadData()
             case .failure(_):
-                fatalError()
+                break
             }
         }
     }

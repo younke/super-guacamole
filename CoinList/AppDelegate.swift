@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var isRunningUnitTests: Bool {
         let env = ProcessInfo.processInfo.environment
         print("ENV KEYS: \(env.keys)")
-        return env.keys.contains("XCInjectBundleInto")
+        return env.keys.contains("XCInjectBundleInfo")
     }
 }
 

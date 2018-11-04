@@ -105,6 +105,15 @@ class CoinListViewControllerTests: XCTestCase {
         XCTAssertEqual(cell.coinSymbolLabel.text, "ETH")
     }
 
+    func testFailsToDownload() {
+        let mockClient = MockCryptoClient(completingWith: .failure(ApiError.requestError))
+        viewController.cryptoCompareClient = mockClient
+        _ = viewController.view
+        wait(for: [mockClient.fetchExpectation!], timeout: 3.0)
+        let rowCount = viewController.tableView(viewController.tableView, numberOfRowsInSection: 0)
+        XCTAssertEqual(rowCount, 0, "Invalid row count")
+    }
+
     private func emptyCoinList() -> CoinList {
         return buildCoinList(with: [])
     }
