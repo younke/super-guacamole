@@ -8,6 +8,10 @@
 
 import UIKit
 
-class CoinListCell: UITableViewCell {
+final class CoinListCell: UITableViewCell, ReusableCell {
     
+    @IBOutlet weak var coinImageView: UIImageView!
+    @IBOutlet weak var coinSymbolLabel: UILabel!
+    @IBOutlet weak var coinNameLabel: UILabel!
+
 }

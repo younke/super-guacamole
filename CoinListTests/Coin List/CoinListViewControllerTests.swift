@@ -37,7 +37,6 @@ class MockCryptoClient: CryptoCompareClient {
 }
 
 class CoinListViewControllerTests: XCTestCase {
-
     var viewController: CoinListViewController!
 
     override func setUp() {
@@ -68,12 +67,48 @@ class CoinListViewControllerTests: XCTestCase {
         XCTAssertFalse(viewController.activityIndicator.isAnimating)
     }
 
+    func testReturnsRowsForEachCoin() {
+        let coinList = buildCoinList(with: [
+            CoinList.Coin(name: "Bitcoin", symbol: "BTC", imagePath: nil),
+            CoinList.Coin(name: "Etherium", symbol: "ETH", imagePath: nil),
+            ])
+        let mockClient = MockCryptoClient(completingWith: .success(coinList))
+        viewController.cryptoCompareClient = mockClient
+        _ = viewController.view
+        wait(for: [mockClient.fetchExpectation!], timeout: 3.0)
+
+        let rowCount = viewController.tableView(viewController.tableView, numberOfRowsInSection: 0)
+        XCTAssertEqual(rowCount, 2, "Invalid row count")
+    }
+
+    func testReturnsCoinCells() {
+        let coinList = buildCoinList(with: [
+            CoinList.Coin(name: "Bitcoin", symbol: "BTC", imagePath: nil),
+            CoinList.Coin(name: "Etherium", symbol: "ETH", imagePath: nil),
+            ])
+        let mockClient = MockCryptoClient(completingWith: .success(coinList))
+        viewController.cryptoCompareClient = mockClient
+        _ = viewController.view
+        wait(for: [mockClient.fetchExpectation!], timeout: 3.0)
+
+        guard let cell = viewController.tableView.cellForRow(at: IndexPath(row: 1, section: 0)) as? CoinListCell else {
+            XCTFail("Did not return the appropriate cell type")
+            return
+        }
+
+        XCTAssertEqual(cell.coinNameLabel.text, "Etherium")
+        XCTAssertEqual(cell.coinSymbolLabel.text, "ETH")
+    }
+
     private func emptyCoinList() -> CoinList {
+        return buildCoinList(with: [])
+    }
+
+    private func buildCoinList(with coins: [CoinList.Coin]) -> CoinList {
         return CoinList(response: "",
                         message: "",
                         baseImageURL: URL(string: "http://foo.com")!,
                         baseLinkURL: URL(string: "http://foo.com")!,
-                        data: CoinList.Data(coins: []))
+                        data: CoinList.Data(coins: coins))
     }
-
 }

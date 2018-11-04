@@ -56,7 +56,7 @@ struct CoinList: Decodable {
         }
 
         func allCoins() -> [Coin] {
-            return Array(coins.values)
+            return Array(coins.values).sorted { $0.name < $1.name }
         }
 
         subscript(_ key: String) -> Coin? {

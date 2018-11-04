@@ -15,9 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
+        guard !isRunningUnitTests else {
+            window = nil
+            return true
+        }
         return true
     }
 
+    private var isRunningUnitTests: Bool {
+        let env = ProcessInfo.processInfo.environment
+        print("ENV KEYS: \(env.keys)")
+        return env.keys.contains("XCInjectBundleInto")
+    }
 }
 

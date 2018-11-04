@@ -23,6 +23,8 @@
 		A7909F5C218D8FCC00B46CB7 /* CoinListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7909F5B218D8FCC00B46CB7 /* CoinListCell.swift */; };
 		A7909F5F218D903900B46CB7 /* CoinListViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7909F5E218D903900B46CB7 /* CoinListViewControllerTests.swift */; };
 		A7909F62218D92E800B46CB7 /* StoryboardInitializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7909F61218D92E800B46CB7 /* StoryboardInitializable.swift */; };
+		A7909F65218DD14600B46CB7 /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7909F64218DD14600B46CB7 /* Coin.swift */; };
+		A7909F67218DF3C500B46CB7 /* ReusableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7909F66218DF3C500B46CB7 /* ReusableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,8 @@
 		A7909F5B218D8FCC00B46CB7 /* CoinListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinListCell.swift; sourceTree = "<group>"; };
 		A7909F5E218D903900B46CB7 /* CoinListViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinListViewControllerTests.swift; sourceTree = "<group>"; };
 		A7909F61218D92E800B46CB7 /* StoryboardInitializable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInitializable.swift; sourceTree = "<group>"; };
+		A7909F64218DD14600B46CB7 /* Coin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
+		A7909F66218DF3C500B46CB7 /* ReusableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableCell.swift; sourceTree = "<group>"; };
 		C2971B19B6BC111276D399C7 /* Pods-CoinListTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinListTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoinListTests/Pods-CoinListTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C33DB0B27E90BBF34B537C08 /* Pods_CoinList.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoinList.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -116,6 +120,7 @@
 		A72A75D12177299C000D6C79 /* CoinList */ = {
 			isa = PBXGroup;
 			children = (
+				A7909F63218DD12700B46CB7 /* Models */,
 				A7909F60218D929C00B46CB7 /* Support */,
 				A7909F58218D8FA100B46CB7 /* Coin List */,
 				A72A75F2217729B8000D6C79 /* API */,
@@ -195,8 +200,17 @@
 			isa = PBXGroup;
 			children = (
 				A7909F61218D92E800B46CB7 /* StoryboardInitializable.swift */,
+				A7909F66218DF3C500B46CB7 /* ReusableCell.swift */,
 			);
 			path = Support;
+			sourceTree = "<group>";
+		};
+		A7909F63218DD12700B46CB7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A7909F64218DD14600B46CB7 /* Coin.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		C1556206C593811EAB5D7700 /* Frameworks */ = {
@@ -382,12 +396,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7909F67218DF3C500B46CB7 /* ReusableCell.swift in Sources */,
 				A72A75F6217729DC000D6C79 /* CryptoCompareClient.swift in Sources */,
 				A7909F5A218D8FB400B46CB7 /* CoinListViewController.swift in Sources */,
 				A7909F62218D92E800B46CB7 /* StoryboardInitializable.swift in Sources */,
 				A72A75FC21772AB8000D6C79 /* CoinList.swift in Sources */,
 				A7909F5C218D8FCC00B46CB7 /* CoinListCell.swift in Sources */,
 				A72A75D32177299C000D6C79 /* AppDelegate.swift in Sources */,
+				A7909F65218DD14600B46CB7 /* Coin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,7 +454,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -469,7 +485,6 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -499,7 +514,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -530,7 +545,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
